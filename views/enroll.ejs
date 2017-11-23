@@ -56,7 +56,7 @@
     <br>
     
     
-<form action="/process/adduser" method="post" >
+<form action="/process/addstore" method="post" >
     
 <div class="form-group">
 <label for="mzname">가게이름<span style=color:#ff0000;> *</span></label>
@@ -124,16 +124,9 @@
 <input type="text" class="form-control" id="mztel" name="mztel" placeholder="나머지 번호를 입력하세요">
 </div>
     <div>
-                                <label for="InputSubject1">파일첨부</label>
-                                <input id="fileInput" filestyle="" type="file" data-class-button="btn btn-default" data-class-input="form-control" data-button-text="" data-icon-name="fa fa-upload" class="form-control" tabindex="-1" style="position: absolute; clip: rect(0px 0px 0px 0px);">
-        <div class="bootstrap-filestyle input-group">
-                                    <input type="text" id="userfile" class="form-control" name="userfile" disabled="">
-                                    <span class="group-span-filestyle input-group-btn" tabindex="0">
-                                        <label for="fileInput" class="btn btn-default ">파일 업로드
-                                            <span class="glyphicon fa fa-upload"></span></label>
-                                          </span>
-                                </div>
-                            </div><br>
+                            
+    </div>
+    <br>
     <div align="center">
 <button type="submit" name="submit" class="btn btn-warning">
 <span class="glyphicon glyphicon-check"></span>맛집등록</button>
@@ -146,4 +139,19 @@
     </div>
     </div>
 </body>
+    <script>
+    $(document).ready(function () {
+        $('#uploadForm').submit(function () {
+            $(this).ajaxSubmit({
+                error: function (xhr) {
+                    status('Error: ' + xhr.status);
+                },
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+            return false;
+        });
+    });
+</script>
 </html>

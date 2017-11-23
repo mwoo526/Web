@@ -21,7 +21,11 @@ var expressErrorHandler = require('express-error-handler');
 
 // Session 미들웨어 불러오기
 var expressSession = require('express-session');
-  
+
+// multer 
+var multer = require('multer');
+
+var done = false;
 
 //===== Passport 사용 =====//
 var passport = require('passport');
@@ -38,13 +42,12 @@ var database = require('./database/database');
 // 모듈로 분리한 라우팅 파일 불러오기
 var route_loader = require('./routes/route_loader');
 
-// index 경로 
-/*
-var index = require('./routes/index');
-*/
+
+
 
 // 익스프레스 객체 생성
 var app = express();
+
 
 
 //===== 뷰 엔진 설정 =====//
@@ -66,7 +69,7 @@ app.use(bodyParser.json())
 
 // public 폴더를 static으로 오픈
 app.use('/public', static(path.join(__dirname, 'public')));
- 
+
 // cookie-parser 설정
 app.use(cookieParser());
 
@@ -78,6 +81,33 @@ app.use(expressSession({
 }));
 
 
+//multer 미들웨어 사용 : 미들웨어 사용 순서 중요  body-parser -> multer -> router
+// App 에서 파일을 업로드 시키기 위해 필요한 설정 2.
+var storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, './uploads/')
+    },
+    filename: function (req, file, callback) {
+        var extension = path.extname(file.originalname);
+        var basename = path.basename(file.originalname,extension);
+        callback(null,basename + extension);
+    }
+});
+
+var upload = multer({ 
+    storage: storage,
+    limits: {
+		files: 10,
+		fileSize: 1024 * 1024 * 1024
+	},
+    onFileUploadStart: function (file) {
+        console.log(file.originalname + ' is starting ...')
+    },
+    onFileUploadComplete: function (file) {
+        console.log(file.fieldname + ' uploaded to  ' + file.path)
+        done = true;
+    }
+});
 
 //===== Passport 사용 설정 =====//
 // Passport의 세션을 사용할 때는 그 전에 Express의 세션을 사용하는 코드가 있어야 함
@@ -85,10 +115,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-//index
-/*
-app.use('/', index);
-*/
+// App 에서 파일을 업로드 시키기 위해 필요한 설정 2.
+app.post('/upload', upload.any(),function (req, res) {
+    if (done == true) {
+        console.log(req.files);
+        res.end("File uploaded.\n" + JSON.stringify(req.files));
+    }
+});
 
 //라우팅 정보를 읽어 들여 라우팅 설정
 var router = express.Router();
@@ -99,8 +132,7 @@ route_loader.init(app, router);
 // 홈 화면 - index.ejs 템플릿을 이용해 홈 화면이 보이도록 함
 router.route('/').get(function(req, res) {
 	console.log('/ 패스 요청됨.');
-    var context = {title:'로그인 및 회원가입을 하세요'};
-	res.render('index.ejs',context);
+	res.render('index.ejs',{alert:""});
 });
 
 // 로그인 화면 - login.ejs 템플릿을 이용해 로그인 화면이 보이도록 함
@@ -134,15 +166,6 @@ router.route('/signup').post(passport.authenticate('local-signup', {
     failureRedirect : '/signup', 
     failureFlash : true 
 }));
-
-/*
-router.route('/main').get(function(req, res) {
-	console.log('/login 패스 요청됨.');
-    var context = '환영합니다';
-	res.render('main.ejs', {id:id,message: req.flash('loginMessage')});
-});
-*/
-
 
 // 프로필 화면 - 로그인 여부를 확인할 수 있도록 먼저 isLoggedIn 미들웨어 실행
 router.route('/main').get(function(req, res) {
@@ -179,22 +202,47 @@ router.route('/logout').get(function(req, res) {
 /* 맛집등록 */
 router.route('/enroll').get(function(req, res) {
 	console.log('/ 패스 요청됨.');
-	res.render('enroll.ejs',{ title: '', items:[] });
+     // 인증 안된 경우
+    if (!req.user) {
+        console.log('사용자 인증 안된 상태임.');
+        res.render('index.ejs',{alert:"로그인을 해주세요!"});
+        return;
+    }
+	res.render('enroll.ejs',{title:""});
 });
 
 /* 맛집리뷰 */
 router.route('/review').get(function(req, res) {
 	console.log('/ 패스 요청됨.');
-	res.render('review.ejs',{ title: '맛집리뷰', items:[] });
+    if (!req.user) {
+        console.log('사용자 인증 안된 상태임.');
+        res.render('index.ejs',{alert:"로그인을 해주세요!"});
+        return;
+    }
+	res.render('review.ejs');
 });
 
 
 /* 맛집리뷰등록 */
 router.route('/redetail').get(function(req, res) {  
 	console.log('/ 패스 요청됨.');
-	res.render('redetail.ejs',{ title: '', items:[] });
+    if (!req.user) {
+        console.log('사용자 인증 안된 상태임.');
+        res.render('index.ejs',{alert:"로그인을 해주세요!"});
+        return;
+    }
+	res.render('redetail.ejs');
 });
 
+
+// 파일 업로드 라우팅 함수 - 로그인 후 세션 저장함
+router.route('/api/photo').post(function (req, res) {
+    if (done == true) {
+        console.log(req.files);
+        res.end("File uploaded.\n" + JSON.stringify(req.files));
+    }
+});
+ 
 
 //===== Passport Strategy 설정 =====//
 

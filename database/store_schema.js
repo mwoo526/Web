@@ -4,12 +4,12 @@ Schema.createSchema = function(mongoose){
     var StoreSchema = mongoose.Schema({
         storename:{type:String,required:true,unique:true},
         storetime:{type:String,required:true},
-        storemenu1:{type:String},
-        storeprice1:{type:String},
-        storemenu2:{type:String},
-        storeprice2:{type:String},
-        storemenu3:{type:String},
-        storeprice3:{type:String},
+        storemenu1:{type:String,'default':''},
+        storeprice1:{type:String,'default':''},
+        storemenu2:{type:String,'default':''},
+        storeprice2:{type:String,'default':''},
+        storemenu3:{type:String,'default':''},
+        storeprice3:{type:String,'default':''},
         storeaddress:{type:String,required:true},
         storetel:{type:String,required:true},
     });

@@ -53,38 +53,59 @@
        <div class="container">			
 <div class="col-sm-6 col-sm-offset-3">
 <center><h1>맛집리뷰등록</h1></center>
+<br><br>
     
-<form action="/insert" method="post" >
+<form action="/process/addreview" method="post" >
+<div class="form-group">
+<input type="text" class="form-control" id="store" name="store" placeholder="맛집명" style='width:300px'  > 
+</div>
     
 <div class="form-group">
-<input type="text" class="form-control" id="mzname" name="mzname" placeholder="제목" >
+<input type="text" class="form-control" id="title" name="title" placeholder="제목" style='width:500px'  > 
 </div>
+    <input type="text" class="form-control" id="score" name="score" placeholder="평점/10" style='width:100px'>
+    <br>
+                            <div>                               
+              
+                                               </div><br>
                             <div>
-                                <label for="InputSubject1">파일첨부</label>
-                                <input id="fileInput" filestyle="" type="file" data-class-button="btn btn-default" data-class-input="form-control" data-button-text="" data-icon-name="fa fa-upload" class="form-control" tabindex="-1" style="position: absolute; clip: rect(0px 0px 0px 0px);">
-                                <div class="bootstrap-filestyle input-group">
-                                    <input type="text" id="userfile" class="form-control" name="userfile" disabled="">
-                                    <span class="group-span-filestyle input-group-btn" tabindex="0">
-                                        <label for="fileInput" class="btn btn-default ">File Upload
-                                            <span class="glyphicon fa fa-upload"></span>
-                                        </label>
-                                    </span>
-                                </div>
-                            </div><br>
-                            <div>
-                                <textarea class="form-control" rows="5" name="contents" placeholder="내용을 쓰세요"></textarea>
+                                <textarea class="form-control" rows="5" id="title" name="content" placeholder="내용을 쓰세요"></textarea>
                             </div><br>
                             <div>
                                 <button type="submit" class="form-control btn btn-warning">등록</button>
                             </div>
                         </form>
+                        <br>
+                                    <label for="InputSubject1">파일첨부</label>
+
+                        <form id="uploadForm" enctype="multipart/form-data" action="/upload" method="post">
+                            <input type="file" name="userPhoto" multiple/>
+                            <br>
+
+                            <input type="submit" value="Upload Image"  class="form-control btn btn-warning"  style='width:120px' name="submit" >
+                        </form>
                     </div>
       </div>
-
+      
       
         <p align="center"> FoodTrip &copy;</p>
       
 
     
 </body>
+    <script>
+    $(document).ready(function () {
+        $('#uploadForm').submit(function () {
+            $(this).ajaxSubmit({
+                error: function (xhr) {
+                    status('Error: ' + xhr.status);
+                },
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+            return false;
+        });
+    });
+</script>
 </html>
