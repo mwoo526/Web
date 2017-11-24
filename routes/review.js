@@ -1,10 +1,10 @@
 var addreview = function(req,res){
     console.log('/process/adduser 라우팅 함수 호출됨');
     
-    var paramStore = req.body.store || req.query.store;
-    var paramTitle= req.body.title || req.query.title;
-    var paramContent = req.body.content || req.query.content;
-    var paramScore = req.body.score || req.query.score;
+    var paramStore = req.body.reviewstore || req.query.reviewstore;
+    var paramTitle= req.body.reviewtitle || req.query.reviewtitle;
+    var paramContent = req.body.reviewcontent || req.query.reviewcontent;
+    var paramScore = req.body.reviewscore || req.query.reviewscore;
         
     var database = req.app.get('database');
 
@@ -53,12 +53,17 @@ var addreview = function(req,res){
 var listreview = function(req, res) {
 	console.log('user 모듈 안에 있는 listuser 호출됨.');
 
+    var paramStore = req.body.reviewstore || req.query.reviewstore;
+    var paramTitle= req.body.reviewtitle || req.query.reviewtitle;
+    var paramContent = req.body.reviewcontent || req.query.reviewcontent;
+    var paramScore = req.body.reviewscore || req.query.reviewscore;
+    
 	// 데이터베이스 객체 참조
 	var database = req.app.get('database');
     
     // 데이터베이스 객체가 초기화된 경우, 모델 객체의 findAll 메소드 호출
 	if (database.db) {
-		// 1. 모든 사용자 검색
+		 //1. 모든 사용자 검색
 		database.ReviewModel.findAll(function(err, results) {
 			// 에러 발생 시, 클라이언트로 에러 전송
 			if (err) {
@@ -86,7 +91,35 @@ var listreview = function(req, res) {
 				res.end();
 			}
 		});
-	} else {
+        
+        // DeviceModel 인스턴스 생성
+		var review = new database.ReviewModel({"reviewstore":paramStore,"reviewtitle":paramTitle,"reviewcontent":paramContent,"reviewscore":paramScore										});
+
+		// save()로 저장
+		review.save(function(err) {
+			if (err) {
+                console.error('리뷰 등록 중 에러 발생 : ' + err.stack);
+                
+                res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+				res.write('<h2>리뷰 등록 중 에러 발생</h2>');
+                res.write('<p>' + err.stack + '</p>');
+				res.end();
+                
+                return;
+            }
+            console.log("단말 데이터 추가함.");
+            
+		    if (review) {
+		    console.dir(review);
+		    
+			res.writeHead('200', {'Content-Type':'application/json;charset=utf8'});
+            res.write(JSON.stringify(review));
+
+			res.end();
+            }
+		});
+    }
+	 else {
 		res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
 		res.write('<h2>데이터베이스 연결 실패</h2>');
 		res.end();

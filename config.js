@@ -11,8 +11,8 @@ module.exports = {
 	db_schemas: [
 	    {file:'./user_schema', collection:'users21', schemaName:'UserSchema', modelName:'UserModel'}
         ,{file:'./device_schema',collection:'devices21', schemaName:'DeviceSchema',modelName:'DeviceModel'}
-        ,{file:'./store_schema',collection:'store23', schemaName:'StoreSchema',modelName:'StoreModel'}
-        ,{file:'./review_schema',collection:'review2', schemaName:'ReviewSchema',modelName:'ReviewModel'}
+        ,{file:'./store_schema',collection:'store24', schemaName:'StoreSchema',modelName:'StoreModel'}
+        ,{file:'./review_schema',collection:'review3', schemaName:'ReviewSchema',modelName:'ReviewModel'}
         
  
         

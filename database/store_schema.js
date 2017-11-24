@@ -12,6 +12,9 @@ Schema.createSchema = function(mongoose){
         storeprice3:{type:String,'default':''},
         storeaddress:{type:String,required:true},
         storetel:{type:String,required:true},
+        count: {type:Number, default: 0},
+        date: {type: Date, default: Date.now},        
+
     });
     
     StoreSchema.static('findById',function(storename,callback){
