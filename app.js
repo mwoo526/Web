@@ -22,6 +22,7 @@ var expressErrorHandler = require('express-error-handler');
 // Session 미들웨어 불러오기
 var expressSession = require('express-session');
 
+
 // multer 
 var multer = require('multer');
 
@@ -132,7 +133,13 @@ route_loader.init(app, router);
 // 홈 화면 - index.ejs 템플릿을 이용해 홈 화면이 보이도록 함
 router.route('/').get(function(req, res) {
 	console.log('/ 패스 요청됨.');
-	res.render('index.ejs',{alert:""});
+    
+    if (!req.user) {
+        console.log('사용자 인증 안된 상태임.');
+        res.render('index.ejs',{alert:""});
+        return;
+    }
+	res.render('main.ejs',{title:"",user: req.user,enroll:""});
 });
 
 // 로그인 화면 - login.ejs 템플릿을 이용해 로그인 화면이 보이도록 함
@@ -208,18 +215,7 @@ router.route('/enroll').get(function(req, res) {
         res.render('index.ejs',{alert:"로그인을 해주세요!"});
         return;
     }
-	res.render('enroll.ejs',{title:""});
-});
-
-/* 맛집리뷰 */
-router.route('/review').get(function(req, res) {
-	console.log('/ 패스 요청됨.');
-    if (!req.user) {
-        console.log('사용자 인증 안된 상태임.');
-        res.render('index.ejs',{alert:"로그인을 해주세요!"});
-        return;
-    }
-	res.render('review.ejs');
+	res.render('enroll.ejs',{title:"",user: req.user,enroll:""});
 });
 
 
@@ -231,8 +227,34 @@ router.route('/redetail').get(function(req, res) {
         res.render('index.ejs',{alert:"로그인을 해주세요!"});
         return;
     }
-	res.render('redetail.ejs');
+	res.render('redetail.ejs',{user: req.user,enroll:""});
 });
+
+
+// 게시판 메뉴 -> board.ejs
+router.route('/board').get(function(req,res){
+    // 최근 날짜 순으로 rawContents 변수에 저장
+   		var database = app.get('database');
+        database.ReviewModel.find({}).sort({date:-1}).exec(function(err,rawContents){
+        if(err){throw err;}
+        res.render('board',{content:rawContents,user: req.user,enroll:""});
+    });
+});
+
+// 맛집 클릭 시 -> store.ejs
+router.route('/store').get(function(req,res){
+    var storeId = req.param('id');
+    // 넘겨받은 id값을 변수에 저장 후 db에서 해당 id를 가진 정보 찾아서 rawContent 변수에 저장
+    var database = app.get('database');
+        database.ReviewModel.findOne({'_id':storeId},function(err,rawContent){ 
+        if(err){throw err;}
+        rawContent.count += 1; // 조회수 +1
+        rawContent.save(function(err){
+            res.render('store',{content:rawContent,user: req.user,enroll:""});
+        });
+    });
+});
+
 
 
 // 파일 업로드 라우팅 함수 - 로그인 후 세션 저장함
@@ -242,7 +264,9 @@ router.route('/api/photo').post(function (req, res) {
         res.end("File uploaded.\n" + JSON.stringify(req.files));
     }
 });
- 
+
+
+
 
 //===== Passport Strategy 설정 =====//
 

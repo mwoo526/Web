@@ -5,11 +5,13 @@ var addreview = function(req,res){
     var paramTitle= req.body.reviewtitle || req.query.reviewtitle;
     var paramContent = req.body.reviewcontent || req.query.reviewcontent;
     var paramScore = req.body.reviewscore || req.query.reviewscore;
-        
+    
+    
     var database = req.app.get('database');
 
     if(database){
         addReview(database,paramStore,paramTitle,paramContent,paramScore,
+       
                 function(err, docs) {
 			// 에러 발생 시, 클라이언트로 에러 전송
 			if (err) {
@@ -26,15 +28,15 @@ var addreview = function(req,res){
 			if (docs) {
 				console.dir(docs);
 				
-				res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
 				
 				// 뷰 템플레이트를 이용하여 렌더링한 후 전송
-				req.app.render('review', function(err, html) {
+				req.app.render('main',{user: req.user,enroll:""}, function(err, html) {
 					if (err) {throw err;}
 					console.log('rendered : ' + html);
 					
 					res.end(html);
-				});
+                    });
+                    
 				
 			} else {  // 조회된 레코드가 없는 경우 실패 응답 전송
 				res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
@@ -126,8 +128,6 @@ var listreview = function(req, res) {
 	}
 	
 };
-
-
 
 
 var addReview = function(db,store,title,content,score,callback){

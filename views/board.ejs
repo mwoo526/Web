@@ -1,0 +1,43 @@
+<% include ./header.ejs %>
+      
+<% if(content.length>0){ %>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <td>번호</td>
+                <td>제목</td>
+                <td>작성자</td>
+                <td>작성날짜</td>
+                <td>조회수</td>
+            </tr>
+        </thead>
+        <tbody>
+            <% var i=0; %>
+            <% content.forEach(function(item){ %>
+            <% i++; %>
+            <tr>
+                <td class="number"><%= i %></td>
+                <td class="title"><a href="/store?id=<%= item._id %>"><%= item.reviewtitle %></a></td>
+                <td class="writer"></td>
+                <td class="date"><%= dateFormatChange(item.date) %></td>
+                <td class="cnt"><%= item.count %></td>
+            </tr>
+            <% }) %>
+            <% } else{ %>
+            <tr>
+                <td colspan="5" align="center">게시물이 없습니다.</td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+<% function dateFormatChange(date){
+    var options={
+        weekday:"short",year:"numeric",month:"short",
+        day:"numeric",hour:"2-digit",minute:"2-digit"
+    };
+    return date.toLocaleTimeString("ko-KR",options);
+} %>
+      </div>
+    </body>
+</html>

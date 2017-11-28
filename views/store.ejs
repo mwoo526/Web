@@ -1,0 +1,21 @@
+<% include ./header.ejs %>
+
+<div class="content_box">
+        <div class="content-title"><%=content.reviewtitle%></div>
+        <div class="content-info">
+            <%=dateFormatChange(content.date)%> / 
+        </div>
+        <div class="content-text">
+            <%=content.reviewcontent%>
+        </div>
+        <a href="/board"><div class="content-Btn">확인</div></a>
+    </div>
+      <% function dateFormatChange(date){
+    var options={
+        weekday:"short",year:"numeric",month:"short",
+        day:"numeric",hour:"2-digit",minute:"2-digit"
+    };
+    return date.toLocaleTimeString("ko-KR",options);
+} %>
+    </body>
+</html>

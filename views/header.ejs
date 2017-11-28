@@ -44,26 +44,17 @@
             <li><a href="/enroll">맛집등록</a></li>
             <li><a href="">맛집예약</a></li>
             <li><a href="/redetail">맛집리뷰</a></li>
-            <li><a href=""/board>맛집공유</a></li>
+            <li><a href="/board">맛집공유</a></li>
           </ul>
+            
             <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
-            <a href="/login" class="btn btn-warning"><span class="glyphicon glyphicon-log-in"></span>로그인</a>
-		    <a href="/signup" class="btn btn-warning"><span class="glyphicon glyphicon-user"></span>회원가입</a>
+            <br>
+            <pre style="font-family:verdana;font-size:12pt;font-weight:bold;"><%= user.nickname %>   <a href="/logout" class="btn btn-warning"><span class="glyphicon glyphicon-log-in"></span>로그아웃</a></pre>
             </form>
         </div>
       </div>
+    
+    <div style=font-family:verdana;font-size:11pt;font-weight:bold;color:#ffffff;><%= enroll %></div>
+
     </nav>
-      
-        <div class="container">
-		    <div class="jumbotron text-center">
-                <img src="../public/image/logo.jpg" width="200" height="200">
-		        <h1> Food Trip</h1>
-				<br>
-                <h2>안녕하세요 Food Trip 입니다.</h2>
-				<div style="color:red"><%= alert %></div>
-				<br>
-		    </div>
-		</div>
-	</body>
-</html>

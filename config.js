@@ -12,7 +12,7 @@ module.exports = {
 	    {file:'./user_schema', collection:'users21', schemaName:'UserSchema', modelName:'UserModel'}
         ,{file:'./device_schema',collection:'devices21', schemaName:'DeviceSchema',modelName:'DeviceModel'}
         ,{file:'./store_schema',collection:'store24', schemaName:'StoreSchema',modelName:'StoreModel'}
-        ,{file:'./review_schema',collection:'review3', schemaName:'ReviewSchema',modelName:'ReviewModel'}
+        ,{file:'./review_schema',collection:'review4', schemaName:'ReviewSchema',modelName:'ReviewModel'}
         
  
         
