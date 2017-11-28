@@ -1,15 +1,17 @@
 <% include ./header.ejs %>
       
 <% if(content.length>0){ %>
-<div>
-    <table class="table">
+<div class="container">
+    <br><br>
+    <br><br>
+    <table class="table table-striped table-bordered table-hover">
         <thead>
             <tr>
-                <td>번호</td>
-                <td>제목</td>
-                <td>작성자</td>
-                <td>작성날짜</td>
-                <td>조회수</td>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성날짜</th>
+                <th>조회수</th>
             </tr>
         </thead>
         <tbody>
@@ -19,7 +21,7 @@
             <tr>
                 <td class="number"><%= i %></td>
                 <td class="title"><a href="/store?id=<%= item._id %>"><%= item.reviewtitle %></a></td>
-                <td class="writer"></td>
+                <td class="writer"><%= user.nickname %></td>
                 <td class="date"><%= dateFormatChange(item.date) %></td>
                 <td class="cnt"><%= item.count %></td>
             </tr>
