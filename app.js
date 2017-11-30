@@ -216,6 +216,20 @@ router.route('/share').get(function(req,res){
     });
 });
 
+// 맛집 클릭 시 -> sharestore.ejs
+router.route('/sharestore').get(function(req,res){
+    var matzipId = req.param('id');
+    // 넘겨받은 id값을 변수에 저장 후 db에서 해당 id를 가진 정보 찾아서 rawContent 변수에 저장
+    var database = app.get('database');
+        database.StoreModel.findOne({'_id':matzipId},function(err,rawMatzip){ 
+        if(err){throw err;}
+        rawMatzip.count += 1; // 조회수 +1
+        rawMatzip.save(function(err){
+            res.render('sharestore',{matzip:rawMatzip,user: req.user,enroll:""});
+        });
+    });
+});
+
 
 /* 맛집등록 */
 router.route('/enroll').get(function(req, res) {

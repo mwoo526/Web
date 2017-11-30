@@ -23,7 +23,7 @@
             <% i++; %>
             <tr>
                 <td class="number"><%= i %></td>
-                <td class="title"><a href="/store?id=<%= item._id %>"><%= item.storename %></a></td>
+                <td class="title"><a href="/sharestore?id=<%= item._id %>"><%= item.storename %></a></td>
                 <td class="writer"><%= user.nickname %></td>
                 <td class="date"><%= dateFormatChange(item.date) %></td>
                 <td class="cnt"><%= item.count %></td>
