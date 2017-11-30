@@ -4,21 +4,26 @@
 <br>      
  <div class="container">			
 <div class="col-sm-6 col-sm-offset-3">
+<<<<<<< HEAD
 <center><h1>맛집등록</h1><div style=color:#ff0000;><%= form %></div></center>
+=======
+    <br><br>
+<center><h1>맛집등록</h1><div style=color:#ff0000;><%= title %></div></center>
+>>>>>>> 1a5d21cba5d2082d3ea27d9d01d94a904f807c2f
     <br>
     
     
 <form action="/process/addstore" method="post" >
     
 <div class="form-group">
-<label for="mzname">가게이름<span style=color:#ff0000;> *</span></label>
-<input type="text" class="form-control" id="mzname" name="mzname" placeholder="가게 이름을 입력해주세요" >
+<label for="storename">가게이름<span style=color:#ff0000;> *</span></label>
+<input type="text" class="form-control" id="storename" name="storename" placeholder="가게 이름을 입력해주세요" >
 </div>
 
 
 <div class="form-group">
-<label for="mztime">운영시간<span style=color:#ff0000;> *</span></label>
-<input type="text" class="form-control" id="mztime" name="mztime" placeholder="운영 시간을 입력해주세요">
+<label for="storetime">운영시간<span style=color:#ff0000;> *</span></label>
+<input type="text" class="form-control" id="storetime" name="storetime" placeholder="운영 시간을 입력해주세요">
 </div>
 
 
@@ -48,11 +53,11 @@
 </div>
 
 <div class="form-group">
-<label for="mzaddr">주소<span style=color:#ff0000;> *</span></label>
-    <input type="text" class="form-control" id="mzaddr" name="mzaddr" placeholder="주소를 입력해주세요"></div>
+<label for="storeaddress">주소<span style=color:#ff0000;> *</span></label>
+    <input type="text" class="form-control" id="storeaddress" name="storeaddress" placeholder="주소를 입력해주세요"></div>
     
 <div class="form-group">
-<label for="mztel">전화번호<span style=color:#ff0000;> *</span></label>
+<label for="storetel">전화번호<span style=color:#ff0000;> *</span></label>
 <select name="telarea">
 <option value="1"> 02 </option>
 <option value="2"> 051 </option>
@@ -73,7 +78,7 @@
 <option value="11"> 043 </option>
 <option value="12"> 064 </option>    
 </select>
-<input type="text" class="form-control" id="mztel" name="mztel" placeholder="나머지 번호를 입력하세요">
+<input type="text" class="form-control" id="storetel" name="storetel" placeholder="나머지 번호를 입력하세요">
 </div>
     <div>
                             
