@@ -30,7 +30,7 @@ var addreview = function(req,res){
 				
 				
 				// 뷰 템플레이트를 이용하여 렌더링한 후 전송
-				req.app.render('main',{user: req.user,enroll:' -> 맛집이 등록되었습니다.'}, function(err, html) {
+				req.app.render('main',{user: req.user,enroll:' -> 리뷰가 등록되었습니다.',title:"홈 화면"}, function(err, html) {
 					if (err) {throw err;}
 					console.log('rendered : ' + html);
 					

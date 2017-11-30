@@ -2,17 +2,34 @@
 <br>
 <br>
 <br>
-<div class="content_box">
-        <div class="content-title"><%=content.reviewtitle%></div>
-        <div class="content-info">
-            <%=dateFormatChange(content.date)%> / 
+    <div class="container">
+        <pre>
+        <font size="4">
+        <div class="form-group">
+        <pre class="label label-default">맛집 :</pre> <%=content.reviewstore%>
+        
+        <pre class="label label-default">제목 :</pre> <%=content.reviewtitle%>
+       
+        <pre class="label label-default">작성일자 :</pre> <%=dateFormatChange(content.date)%> 
+        
+        <pre class="label label-default">평점 :</pre> <%=content.reviewscore%> 점
+
+        <pre class="label label-default">내용 :</pre> 
+        
+        <%=content.reviewcontent%>
         </div>
-        <div class="content-text">
-            <%=content.reviewcontent%>
-        </div>
-        <a href="/board"><div class="content-Btn">확인</div></a>
+        </font>
+        <a href="/board" class="btn btn-warning"><span class="glyphicon glyphicon-log-in"></span>게시판으로</a>
+        </pre>
     </div>
-      <% function dateFormatChange(date){
+
+    <div class="jumbotron text-center">
+    <img src="../public/image/logo.jpg" width="50" height="50">
+    <p align="center"> FoodTrip &copy;</p>
+    </div>
+      
+    
+    <% function dateFormatChange(date){
     var options={
         weekday:"short",year:"numeric",month:"short",
         day:"numeric",hour:"2-digit",minute:"2-digit"

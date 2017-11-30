@@ -1,0 +1,35 @@
+<% include ./header.ejs %>
+        <br><br><br><br>
+    	<div class="container">
+    		<br>
+				<div>
+					<form action="/process/sendall" method="post" >
+				        <div class="form-group">
+				            <h3><label>예약 알림</label></h3>
+                            <div>
+                                <font size="4"> <label class="label label-default" >예약 맛집  </label></font>
+                            <pre style='width:400px;height:100px'>
+                            <input type="text" class="form-control input-sm" name="store" placeholder="ex)그라지에"  style='width:200px;height:50px'>
+                            </pre>
+                            </div>
+                                <font size="4"><label class="label label-default" >예약 시간  </label></font>
+                            <pre style='width:400px;height:70px'>
+                            
+    <input type="text" class="" name="hour" placeholder=""  style='width:50px'> 시 <input type="text" class="" name="minite" placeholder=""  style='width:50px'> 분
+                            </pre>
+				        </div>
+				        
+				        <button type="submit" class="form-control btn btn-warning" style='width:100px'>예약</button>
+				    </form>
+				</div>
+				
+			</div>
+            <br>
+		<div class="jumbotron text-center">
+    <img src="../public/image/logo.jpg" width="50" height="50">
+    <p align="center"> FoodTrip &copy;</p>
+    </div>
+		 
+	</body>
+</html>
+

@@ -1,5 +1,8 @@
 var fcm = require('node-gcm');
 var config = require('../config.js');
+//
+var schedule = require('node-schedule');
+
 
 
 var adddevice = function(req, res) {
@@ -165,9 +168,12 @@ var sendall = function(req, res) {
 	
 	var database = req.app.get('database');
 	 
-    var paramData = req.body.data || req.query.data;
+    var paramStore = req.body.store || req.query.store;
+    //var paramMonth = req.body.month || req.query.month;
+    var paramDay = req.body.day || req.query.day;
+    var paramHour = req.body.hour || req.query.hour;
+    var paramMinite = req.body.minite || req.query.minite;
 	
-    console.log('요청 파라미터 : ' + paramData);
     
 	// 데이터베이스 객체가 초기화된 경우
 	if (database.db) {
@@ -208,20 +214,29 @@ var sendall = function(req, res) {
 
                     return;
                 }
-				
-				// node-gcm을 이용해 전송
+                
+    
 				var message = new fcm.Message({
 				    priority: 'high',
 				    timeToLive: 3
 				});
+                //
+                var schedular = schedule.scheduleJob({/*date:paramDay,*/hour:paramHour,minute:paramMinite},function(){
+                                                     
+				// node-gcm을 이용해 전송
+				
 				message.addData('command', 'show');
 				message.addData('type', 'text/plain');
-				message.addData('data', paramData);
-
-				var sender = new fcm.Sender(config.fcm_api_key);
+				//message.addData('date', paramDay);
+				message.addData('store', paramStore);
+				message.addData('hour', paramHour);
+				message.addData('minute', paramMinite);
+                res.redirect('/reserve');
+                
+                var sender = new fcm.Sender(config.fcm_api_key);
 
 				sender.send(message, regIds, function (err, result) {
-					if (err) {
+					/*if (err) {
                         console.error('푸시 전송 시도 중 에러 발생 : ' + err.stack);
                 
                         res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
@@ -237,9 +252,17 @@ var sendall = function(req, res) {
 					res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
 					res.write('<h2>푸시 메시지 전송 성공</h2>');
 					res.end();
+              */
+                  
+                    
+                        //
+                });
+               
 					
 				});
-				
+                
+                
+
 				
 			} else {
 				res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});

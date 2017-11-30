@@ -1,0 +1,48 @@
+<% include ./header.ejs %>
+<br>
+<br>
+<br>
+    <div class="container">
+        <br><br>
+        <h1>맛집 게시판</h1>
+        <pre style='width:800px'>
+        <font size="4">
+        <div class="form-group">
+        <pre class="label label-default">가게이름 :</pre> <%=matzip.storename%>
+        
+        <pre class="label label-default">운영시간 :</pre> <%=matzip.storetime%>
+        
+        <table>
+        <tr>
+        <td>       </td>
+        <td><pre class="label label-default">메뉴 :</pre> <%=matzip.storemenu1%>          </td>      
+        <td><pre class="label label-default">가격 :</pre> <%=matzip.storeprice1%> </td>
+        </tr><tr>
+        <td>        </td>
+        <td><pre class="label label-default">메뉴 :</pre> <%=matzip.storemenu2%>          </td>      
+        <td><pre class="label label-default">가격 :</pre> <%=matzip.storeprice2%></td>
+        </tr><tr>
+        <td>        </td>
+        <td><pre class="label label-default">메뉴 :</pre> <%=matzip.storemenu3%>           </td>     
+        <td><pre class="label label-default">가격 :</pre> <%=matzip.storeprice3%></td> 
+        </tr>   
+        </table>
+        
+        <pre class="label label-default">주소 :</pre> <%=matzip.storeaddress%>
+        
+        
+        <pre class="label label-default">전화번호 : </pre> <%=matzip.storetel%>
+        </div>
+        </font>
+        <a href="/share" class="btn btn-warning"><span class="glyphicon glyphicon-log-in"></span>게시판으로</a>
+        </pre>
+    </div>
+
+    <div class="jumbotron text-center">
+    <img src="../public/image/logo.jpg" width="50" height="50">
+    <p align="center"> FoodTrip &copy;</p>
+    </div>
+      
+
+    </body>
+</html>

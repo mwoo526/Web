@@ -9,10 +9,10 @@ module.exports = {
 	server_port: 3000,
 	db_url: 'mongodb://localhost:27017/local',
 	db_schemas: [
-	    {file:'./user_schema', collection:'users21', schemaName:'UserSchema', modelName:'UserModel'}
+	    {file:'./user_schema', collection:'users30', schemaName:'UserSchema', modelName:'UserModel'}
         ,{file:'./device_schema',collection:'devices21', schemaName:'DeviceSchema',modelName:'DeviceModel'}
-        ,{file:'./store_schema',collection:'store24', schemaName:'StoreSchema',modelName:'StoreModel'}
-        ,{file:'./review_schema',collection:'review4', schemaName:'ReviewSchema',modelName:'ReviewModel'}
+        ,{file:'./store_schema',collection:'store30', schemaName:'StoreSchema',modelName:'StoreModel'}
+        ,{file:'./review_schema',collection:'review10', schemaName:'ReviewSchema',modelName:'ReviewModel'}
         
  
         

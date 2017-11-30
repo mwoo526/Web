@@ -8,6 +8,8 @@ Schema.createSchema = function(mongoose){
         reviewscore:{type:String,'default':''},
         count: {type:Number, default: 0}, //
         date: {type: Date, default: Date.now}, //
+        deleted: {type: Boolean, default: false} // true면 삭제 된 경우임
+
     });
         
     ReviewSchema.static('findById',function(reviewstore,callback){

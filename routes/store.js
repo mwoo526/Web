@@ -26,7 +26,7 @@ var addstore = function(req, res) {
                 console.error('사용자 추가 중 에러 발생 : ' + err.stack);
                 
                 res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-                var context={title:"등록을 위해 입력폼을 작성해주세요."}
+                var context={title:"맛집등록",form:"등록을 위해 입력폼을 작성해주세요.",user: req.user,enroll:""}
 				req.app.render('enroll',context, function(err, html) {
 					if (err) {throw err;}
 					
@@ -45,7 +45,7 @@ var addstore = function(req, res) {
 				res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
 				
 				// 뷰 템플레이트를 이용하여 렌더링한 후 전송
-				var context = {enroll:' -> 맛집이 등록되었습니다.',user:""};
+				var context = {enroll:' -> 맛집이 등록되었습니다.',user: req.user,title:"홈 화면"};
 				req.app.render('main', context, function(err, html) {
 					if (err) {throw err;}
 					

@@ -139,7 +139,7 @@ router.route('/').get(function(req, res) {
         res.render('index.ejs',{alert:""});
         return;
     }
-	res.render('main.ejs',{title:"",user: req.user,enroll:""});
+	res.render('main.ejs',{title:"홈 화면",user: req.user,enroll:""});
 });
 
 // 로그인 화면 - login.ejs 템플릿을 이용해 로그인 화면이 보이도록 함
@@ -192,9 +192,9 @@ router.route('/main').get(function(req, res) {
     // 인증된 경우
     console.log('사용자 인증된 상태임.');
 	if (Array.isArray(req.user)) {
-		res.render('main.ejs', {user: req.user[0]._doc,enroll:""});
+		res.render('main.ejs', {title:"홈 화면",user: req.user[0]._doc,enroll:""});
 	} else {
-		res.render('main.ejs', {user: req.user,enroll:""});
+		res.render('main.ejs', {title:"홈 화면",user: req.user,enroll:""});
 	}
 });
 
@@ -215,7 +215,7 @@ router.route('/enroll').get(function(req, res) {
         res.render('index.ejs',{alert:"로그인을 해주세요!"});
         return;
     }
-	res.render('enroll.ejs',{title:"",user: req.user,enroll:""});
+	res.render('enroll.ejs',{title:"맛집등록",form:"", user: req.user,enroll:""});
 });
 
 
@@ -227,19 +227,48 @@ router.route('/redetail').get(function(req, res) {
         res.render('index.ejs',{alert:"로그인을 해주세요!"});
         return;
     }
-	res.render('redetail.ejs',{user: req.user,enroll:""});
+	res.render('redetail.ejs',{title:"맛집리뷰",user: req.user,enroll:""});
+});
+
+/* 맛집예약등록 */
+router.route('/reserve').get(function(req, res) {  
+	console.log('/ 패스 요청됨.');
+    if (!req.user) {
+        console.log('사용자 인증 안된 상태임.');
+        res.render('index.ejs',{alert:"로그인을 해주세요!"});
+        return;
+    }
+	res.render('reserve.ejs',{title:"맛집예약",user: req.user,enroll:""});
 });
 
 
-// 게시판 메뉴 -> board.ejs
+// 맛집공유  -> board.ejs
 router.route('/board').get(function(req,res){
     // 최근 날짜 순으로 rawContents 변수에 저장
    		var database = app.get('database');
-        database.ReviewModel.find({}).sort({date:-1}).exec(function(err,rawContents){
+        /*database.ReviewModel.find({}).sort({date:-1}).exec(function(err,rawContents){
         if(err){throw err;}
-        res.render('board',{content:rawContents,user: req.user,enroll:""});
+        res.render('board',{content:rawContents,title:"맛집공유",user: req.user,enroll:""});*/
+    
+    var page = req.param('page');
+    if(page == null) {page = 1;}
+    var skipSize = (page-1)*10;
+    var limitSize = 10;
+    var pageNum = 1;
+    
+    database.ReviewModel.count({deleted:false},function(err, totalCount){
+       // db에서 날짜 순으로 데이터들을 가져옴
+        if(err) throw err;
+        pageNum = Math.ceil(totalCount/limitSize);
+        database.ReviewModel.find({deleted:false}).sort({date:-1}).skip(skipSize).limit(limitSize).exec(function(err, pageContents) {
+            if(err) throw err;
+            res.render('board', {title: "맛집공유",user:req.user,enroll:"", content: pageContents, pagination: pageNum});
+        });
     });
-});
+    
+
+ });
+    
 
 // 맛집 클릭 시 -> store.ejs
 router.route('/store').get(function(req,res){
@@ -250,12 +279,51 @@ router.route('/store').get(function(req,res){
         if(err){throw err;}
         rawContent.count += 1; // 조회수 +1
         rawContent.save(function(err){
-            res.render('store',{content:rawContent,user: req.user,enroll:""});
+            res.render('store',{content:rawContent,title:"맛집공유",user: req.user,enroll:""});
         });
     });
 });
 
 
+// 게시판 메뉴 -> share.ejs
+router.route('/share').get(function(req,res){
+    // 최근 날짜 순으로 rawContents 변수에 저장
+   	var database = app.get('database');
+        /*database.StoreModel.find({}).sort({date:-1}).exec(function(err,rawMatzip){
+        if(err){throw err;}
+        res.render('share',{matzip:rawMatzip,title:"맛집게시판",user: req.user,enroll:""});
+    
+         });*/
+    var page = req.param('page');
+    if(page == null) {page = 1;}
+    var skipSize = (page-1)*10;
+    var limitSize = 10;
+    var pageNum = 1;
+    
+    database.StoreModel.count({deleted:false},function(err, totalCount){
+       // db에서 날짜 순으로 데이터들을 가져옴
+        if(err) throw err;
+        pageNum = Math.ceil(totalCount/limitSize);
+        database.StoreModel.find({deleted:false}).sort({date:-1}).skip(skipSize).limit(limitSize).exec(function(err, rawMatzip) {
+            if(err) throw err;
+            res.render('share', {title: "맛집게시판", user:req.user, enroll:"", matzip: rawMatzip, pagination: pageNum});
+        });
+    });
+}); 
+
+// 맛집 클릭 시 -> sharestore.ejs
+router.route('/sharestore').get(function(req,res){
+    var matzipId = req.param('id');
+    // 넘겨받은 id값을 변수에 저장 후 db에서 해당 id를 가진 정보 찾아서 rawContent 변수에 저장
+    var database = app.get('database');
+        database.StoreModel.findOne({'_id':matzipId},function(err,rawMatzip){ 
+        if(err){throw err;}
+        rawMatzip.count += 1; // 조회수 +1
+        rawMatzip.save(function(err){
+            res.render('sharestore',{matzip:rawMatzip,title:"맛집게시판",user: req.user,enroll:""});
+        });
+    });
+});
 
 // 파일 업로드 라우팅 함수 - 로그인 후 세션 저장함
 router.route('/api/photo').post(function (req, res) {
@@ -264,8 +332,6 @@ router.route('/api/photo').post(function (req, res) {
         res.end("File uploaded.\n" + JSON.stringify(req.files));
     }
 });
-
-
 
 
 //===== Passport Strategy 설정 =====//

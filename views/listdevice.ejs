@@ -6,6 +6,8 @@
 		
 		<title>단말 리스트 페이지</title>
 		
+  		<link href="/public/semantic.min.css" rel="stylesheet" >
+		
 		<style>
 			* {
 				padding:0;
@@ -44,16 +46,19 @@
 
 		</style>
 		
+		
+		<script src="/public/jquery-2.1.4.min.js"></script>
+		<script src="/public/semantic.min.js"></script>
 		 
 	</head>
 	<body>
-    	
-    	<div class="container">
+            	<div class="container">
     		<br>
     		
-			<!--<div class="ui raised segment">
+    	
+ <div class="ui raised segment">
 				<a class="ui blue ribbon label">단말관리</a>
-      			<span id="board_title"><%=title %></span>
+      			<span id="board_title"></span>
 			
 				
 				<div class="ui blue fluid card">
@@ -110,22 +115,11 @@
 						<a class="ui button" href='/process/listdevice'>재요청</a>
 					
 					</div>
-				</div>-->
-				
-				<div>
-					<form action="/process/sendall" method="post" class="content ui form" >
-				        <div class="field">
-				            <label>전송할 메시지</label>
-				            <input type="text" class="ui input" name="data" value="Hello.">
-				        </div>
-				        
-				        <button type="submit" class="ui submit button">공지전송</button>
-				    </form>
 				</div>
-				
-			</div>
-		</div>
+    
+            </div>
+    	</div>
 		 
 	</body>
 </html>
-
+    
