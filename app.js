@@ -206,6 +206,17 @@ router.route('/logout').get(function(req, res) {
 	res.redirect('/');
 });
 
+// 맛집게시판 메뉴->share.ejs
+router.route('/share').get(function(req,res){
+    // 최근 날짜 순으로 rawMatzip 변수에 저장
+   		var database = app.get('database');
+        database.StoreModel.find({}).sort({date:-1}).exec(function(err,rawMatzip){
+        if(err){throw err;}
+        res.render('share',{matzip:rawMatzip,user: req.user,enroll:""});
+    });
+});
+
+
 /* 맛집등록 */
 router.route('/enroll').get(function(req, res) {
 	console.log('/ 패스 요청됨.');

@@ -2,16 +2,16 @@
 <br>
 <br>
 <br>
-<% if(content.length>0){ %>
+<% if(matzip.length>0){ %>
 <div class="container">
     <br><br>
-    <center><h1>맛집 리뷰 게시판</h1></center>
+    <center><h1>맛집 게시판</h1></center>
     <br><br>
     <table class="table table-striped table-bordered table-hover">
         <thead>
             <tr>
                 <th>번호</th>
-                <th>제목</th>
+                <th>맛집 이름</th>
                 <th>작성자</th>
                 <th>작성날짜</th>
                 <th>조회수</th>
@@ -19,11 +19,11 @@
         </thead>
         <tbody>
             <% var i=0; %>
-            <% content.forEach(function(item){ %>
+            <% matzip.forEach(function(item){ %>
             <% i++; %>
             <tr>
                 <td class="number"><%= i %></td>
-                <td class="title"><a href="/store?id=<%= item._id %>"><%= item.reviewtitle %></a></td>
+                <td class="title"><a href="/store?id=<%= item._id %>"><%= item.storename %></a></td>
                 <td class="writer"><%= user.nickname %></td>
                 <td class="date"><%= dateFormatChange(item.date) %></td>
                 <td class="cnt"><%= item.count %></td>
