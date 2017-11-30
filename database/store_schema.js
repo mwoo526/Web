@@ -14,11 +14,9 @@ Schema.createSchema = function(mongoose){
         storetel:{type:String,required:true},
         count: {type:Number, default: 0}, //
         date: {type: Date, default: Date.now}, //
-<<<<<<< HEAD
-        deleted: {type: Boolean, default: false} // true면 삭제 된 경우임
-=======
 
->>>>>>> 1a5d21cba5d2082d3ea27d9d01d94a904f807c2f
+        deleted: {type: Boolean, default: false} // true면 삭제 된 경우임
+
     });
     
     StoreSchema.static('findById',function(storename,callback){
