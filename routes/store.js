@@ -2,16 +2,16 @@
 var addstore = function(req, res) {
 	console.log('user(user.js) 모듈 안에 있는 adduser 호출됨.');
     
-    var parmName=req.body.mzname || req.query.mzname;
-	var paramTime = req.body.mztime || req.query.mztime;
+    var parmName=req.body.storename || req.query.storename;
+	var paramTime = req.body.storetime || req.query.storetime;
     var paramMenu1 = req.body.storemenu1 || req.query.storemenu1;
     var paramPrice1 = req.body.storeprice1 || req.query.storeprice1;
     var paramMenu2 = req.body.storemenu2 || req.query.storemenu2;
     var paramPrice2 = req.body.storeprice2 || req.query.storeprice2;
     var paramMenu3 = req.body.storemenu3 || req.query.storemenu3;
     var paramPrice3 = req.body.storeprice3 || req.query.storeprice3;
-    var paramAddress = req.body.mzaddr || req.query.mzaddr;
-    var paramTell = req.body.mztel || req.query.mztel;
+    var paramAddress = req.body.storeaddress || req.query.storeaddress;
+    var paramTell = req.body.storetel || req.query.storetel;
 	
     console.log('요청 파라미터 : ' +parmName+','+ paramTime + ', ' + paramMenu1 + ', '+paramPrice1 +' , '+ paramAddress+ ' , '+paramTell);
     
