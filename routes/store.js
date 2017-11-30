@@ -11,16 +11,17 @@ var addstore = function(req, res) {
     var paramMenu3 = req.body.storemenu3 || req.query.storemenu3;
     var paramPrice3 = req.body.storeprice3 || req.query.storeprice3;
     var paramAddress = req.body.storeaddress || req.query.storeaddress;
+    var paramTellarea = req.body.storetelarea || req.query.storetelarea;
     var paramTell = req.body.storetel || req.query.storetel;
 	
-    console.log('요청 파라미터 : ' +parmName+','+ paramTime + ', ' + paramMenu1 + ', '+paramPrice1 +' , '+ paramAddress+ ' , '+paramTell);
+    console.log('요청 파라미터 : ' +parmName+','+ paramTime + ', ' + paramMenu1 + ', '+paramPrice1 +' , '+ paramAddress+ ' , '+paramTellarea + ' , ' +paramTell);
     
     // 데이터베이스 객체 참조
 	var database = req.app.get('database');
 	
     // 데이터베이스 객체가 초기화된 경우, addUser 함수 호출하여 사용자 추가
 	if (database.db) {
-		addStore(database, parmName, paramTime, paramMenu1,paramPrice1,paramMenu2,paramPrice2,paramMenu3,paramPrice3,paramAddress,paramTell, function(err, addedStore) {
+		addStore(database, parmName, paramTime, paramMenu1,paramPrice1,paramMenu2,paramPrice2,paramMenu3,paramPrice3,paramAddress,paramTellarea,paramTell, function(err, addedStore) {
             // 동일한 id로 추가하려는 경우 에러 발생 - 클라이언트로 에러 전송
 			if (err) {
                 console.error('사용자 추가 중 에러 발생 : ' + err.stack);
@@ -118,11 +119,11 @@ var liststore = function(req, res) {
 
 
 //맛집를 등록
-var addStore = function(database,storename,storetime, storemenu1,storeprice1,storemenu2,storeprice2,storemenu3,storeprice3,storeaddress,storetel,callback) {
+var addStore = function(database,storename,storetime, storemenu1,storeprice1,storemenu2,storeprice2,storemenu3,storeprice3,storeaddress,storetelarea,storetel,callback) {
 	console.log('addUser 호출됨 : '+storename +', '+ storetime + ', ' + storemenu1  +' , '+storeprice1+', ' + storeaddress+' , '+storetel);
 	
 	// UserModel 인스턴스 생성
-	var user = new database.StoreModel({storename:storename ,storetime:storetime,storemenu1:storemenu1,storeprice1:storeprice1,storemenu2:storemenu2,storeprice2:storeprice2,storemenu3:storemenu3, storeprice3:storeprice3,storeaddress:storeaddress,storetel:storetel});
+	var user = new database.StoreModel({storename:storename ,storetime:storetime,storemenu1:storemenu1,storeprice1:storeprice1,storemenu2:storemenu2,storeprice2:storeprice2,storemenu3:storemenu3, storeprice3:storeprice3,storeaddress:storeaddress,storetelarea:storetelarea,storetel:storetel});
 
 	// save()로 저장
 	user.save(function(err) {
