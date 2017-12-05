@@ -12,6 +12,7 @@ Schema.createSchema = function(mongoose){
         storeprice3:{type:String,'default':''},
         storeaddress:{type:String,required:true},
         storetel:{type:String,required:true},
+        file:{type:String,'default':''},
         count: {type:Number, default: 0}, //
         date: {type: Date, default: Date.now}, //
 

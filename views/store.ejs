@@ -2,10 +2,14 @@
 <br>
 <br>
 <br>
-    <div class="container">
+    <div id="total">
+        
+        <div id="nav">
+        <image src="<%=content.file%>"width="200" height="200">
+        </div>
+        <div id="section">
         <pre>
-        <font size="4">
-        <div class="form-group">
+        <div >
         <pre class="label label-default">맛집 :</pre> <%=content.reviewstore%>
         
         <pre class="label label-default">제목 :</pre> <%=content.reviewtitle%>
@@ -18,17 +22,19 @@
         
         <%=content.reviewcontent%>
         </div>
-        </font>
+        <div id="footer" align="right">
         <a href="/board" class="btn btn-warning"><span class="glyphicon glyphicon-log-in"></span>게시판으로</a>
-        </pre>
+        </div>
+        </pre>        
+        </div>
        
-    </div>
+    
 
     <div class="jumbotron text-center">
     <img src="../public/image/logo.jpg" width="50" height="50">
     <p align="center"> FoodTrip &copy;</p>
     </div>
-      
+</div>      
     
     <% function dateFormatChange(date){
     var options={

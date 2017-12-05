@@ -43,8 +43,7 @@ var database = require('./database/database');
 // 모듈로 분리한 라우팅 파일 불러오기
 var route_loader = require('./routes/route_loader');
 
-
-
+var filename='';
 
 // 익스프레스 객체 생성
 var app = express();
@@ -82,15 +81,17 @@ app.use(expressSession({
 }));
 
 
+
 //multer 미들웨어 사용 : 미들웨어 사용 순서 중요  body-parser -> multer -> router
 // App 에서 파일을 업로드 시키기 위해 필요한 설정 2.
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, './uploads/')
+        callback(null, 'public/uploads/')
     },
     filename: function (req, file, callback) {
         var extension = path.extname(file.originalname);
         var basename = path.basename(file.originalname,extension);
+        filename="public/uploads/"+basename+extension;
         callback(null,basename + extension);
     }
 });
@@ -100,14 +101,7 @@ var upload = multer({
     limits: {
 		files: 10,
 		fileSize: 1024 * 1024 * 1024
-	},
-    onFileUploadStart: function (file) {
-        console.log(file.originalname + ' is starting ...')
-    },
-    onFileUploadComplete: function (file) {
-        console.log(file.fieldname + ' uploaded to  ' + file.path)
-        done = true;
-    }
+	}
 });
 
 //===== Passport 사용 설정 =====//
@@ -116,19 +110,23 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-// App 에서 파일을 업로드 시키기 위해 필요한 설정 2.
-app.post('/upload', upload.any(),function (req, res) {
-    if (done == true) {
-        console.log(req.files);
-        res.end("File uploaded.\n" + JSON.stringify(req.files));
-    }
+// 
+app.post('/storeUpload', upload.any(),function (req, res) {
+	res.render('enroll.ejs',{title:"맛집등록",form:"", user: req.user,enroll:"",image:"사진이 등록되었습니다.^^"});
 });
+
+// App 에서 파일을 업로드 시키기 위해 필요한 설정 .
+app.post('/reviewUpload', upload.any(),function (req, res) {
+    res.render('redetail.ejs',{title:"맛집리뷰",user: req.user,enroll:"",image:"사진이 등록되었습니다.^^"});
+});
+
+
+
 
 //라우팅 정보를 읽어 들여 라우팅 설정
 var router = express.Router();
 route_loader.init(app, router);
 
-//===== Passport 관련 라우팅 =====//
 
 // 홈 화면 - index.ejs 템플릿을 이용해 홈 화면이 보이도록 함
 router.route('/').get(function(req, res) {
@@ -215,7 +213,7 @@ router.route('/enroll').get(function(req, res) {
         res.render('index.ejs',{alert:"로그인을 해주세요!"});
         return;
     }
-	res.render('enroll.ejs',{title:"맛집등록",form:"", user: req.user,enroll:""});
+	res.render('enroll.ejs',{title:"맛집등록",form:"", user: req.user,enroll:"",image:"사진을 등록하세요*.*"});
 });
 
 
@@ -227,7 +225,7 @@ router.route('/redetail').get(function(req, res) {
         res.render('index.ejs',{alert:"로그인을 해주세요!"});
         return;
     }
-	res.render('redetail.ejs',{title:"맛집리뷰",user: req.user,enroll:""});
+	res.render('redetail.ejs',{title:"맛집리뷰",user: req.user,enroll:"",image:"사진을 등록하세요*.*"});
 });
 
 /* 맛집예약등록 */
@@ -244,12 +242,7 @@ router.route('/reserve').get(function(req, res) {
 
 // 맛집공유  -> board.ejs
 router.route('/board').get(function(req,res){
-    // 최근 날짜 순으로 rawContents 변수에 저장
-   		var database = app.get('database');
-        /*database.ReviewModel.find({}).sort({date:-1}).exec(function(err,rawContents){
-        if(err){throw err;}
-        res.render('board',{content:rawContents,title:"맛집공유",user: req.user,enroll:""});*/
-    
+    var database = app.get('database');
     var page = req.param('page');
     if(page == null) {page = 1;}
     var skipSize = (page-1)*10;
@@ -289,11 +282,6 @@ router.route('/store').get(function(req,res){
 router.route('/share').get(function(req,res){
     // 최근 날짜 순으로 rawContents 변수에 저장
    	var database = app.get('database');
-        /*database.StoreModel.find({}).sort({date:-1}).exec(function(err,rawMatzip){
-        if(err){throw err;}
-        res.render('share',{matzip:rawMatzip,title:"맛집게시판",user: req.user,enroll:""});
-    
-         });*/
     var page = req.param('page');
     if(page == null) {page = 1;}
     var skipSize = (page-1)*10;
@@ -325,17 +313,173 @@ router.route('/sharestore').get(function(req,res){
     });
 });
 
-// 파일 업로드 라우팅 함수 - 로그인 후 세션 저장함
-router.route('/api/photo').post(function (req, res) {
-    if (done == true) {
-        console.log(req.files);
-        res.end("File uploaded.\n" + JSON.stringify(req.files));
-    }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+router.route('/process/addstore').post(function(req, res) {
+	console.log('user(user.js) 모듈 안에 있는 adduser 호출됨.');
+    
+    var parmName=req.body.storename || req.query.storename;
+	var paramTime = req.body.storetime || req.query.storetime;
+    var paramMenu1 = req.body.storemenu1 || req.query.storemenu1;
+    var paramPrice1 = req.body.storeprice1 || req.query.storeprice1;
+    var paramMenu2 = req.body.storemenu2 || req.query.storemenu2;
+    var paramPrice2 = req.body.storeprice2 || req.query.storeprice2;
+    var paramMenu3 = req.body.storemenu3 || req.query.storemenu3;
+    var paramPrice3 = req.body.storeprice3 || req.query.storeprice3;
+    var paramAddress = req.body.storeaddress || req.query.storeaddress;
+    var paramTell = req.body.storetel || req.query.storetel;
+    var paramFile = filename;
+
+    console.log('요청 파라미터 : ' +parmName+','+ paramTime + ', ' + paramMenu1 + ', '+paramPrice1 +' , '+ paramAddress+ ' , '+paramTell+' , '+paramFile);
+    
+    // 데이터베이스 객체 참조
+	var database = req.app.get('database');
+	
+    // 데이터베이스 객체가 초기화된 경우, addUser 함수 호출하여 사용자 추가
+	if (database.db) {
+		addStore(database, parmName, paramTime, paramMenu1,paramPrice1,paramMenu2,paramPrice2,paramMenu3,paramPrice3,paramAddress,paramTell,paramFile, function(err, addedStore) {
+            // 동일한 id로 추가하려는 경우 에러 발생 - 클라이언트로 에러 전송
+			if (err) {
+                console.error('맛집 추가 중 에러 발생 : ' + err.stack);
+                
+                res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+                var context={title:"맛집등록",form:"등록을 위해 입력폼을 작성해주세요.",user: req.user,enroll:""}
+				req.app.render('enroll',context, function(err, html) {
+					if (err) {throw err;}
+					
+					console.log("rendered : " + html);
+					
+					res.end(html);
+				});
+				
+                return;
+            }
+			
+            // 결과 객체 있으면 성공 응답 전송
+			if (addedStore) {
+				console.dir(addedStore);
+ 
+				res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+				
+				// 뷰 템플레이트를 이용하여 렌더링한 후 전송
+				var context = {enroll:' -> 맛집이 등록되었습니다.',user: req.user,title:"홈 화면"};
+				req.app.render('main', context, function(err, html) {
+					if (err) {throw err;}
+					
+					console.log("rendered : " + html);
+					
+					res.end(html);
+				});
+				
+			} else {  // 결과 객체가 없으면 실패 응답 전송
+				res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+				res.write('<h2>맛집 추가  실패</h2>');
+				res.end();
+			}
+		});
+	} else {  // 데이터베이스 객체가 초기화되지 않은 경우 실패 응답 전송
+		res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+		res.write('<h2>데이터베이스 연결 실패</h2>');
+		res.end();
+	}
+	
 });
+
+//맛집를 등록
+var addStore = function(database,storename,storetime, storemenu1,storeprice1,storemenu2,storeprice2,storemenu3,storeprice3,storeaddress,storetel,file,callback) {
+	console.log('addStore 호출됨 : '+storename +', '+ storetime + ', ' + storemenu1  +' , '+storeprice1+', ' + storeaddress+' , '+storetel);
+	
+	// UserModel 인스턴스 생성
+	var user = new database.StoreModel({storename:storename ,storetime:storetime,storemenu1:storemenu1,storeprice1:storeprice1,storemenu2:storemenu2,storeprice2:storeprice2,storemenu3:storemenu3, storeprice3:storeprice3,storeaddress:storeaddress,storetel:storetel,file:file});
+
+	// save()로 저장
+	user.save(function(err) {
+		if (err) {
+			callback(err, null);
+			return;
+		}
+		
+	    console.log("맛집 데이터 추가함.");
+	    callback(null, user);
+	     
+	});
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 리뷰정보 등록
+router.route('/process/addreview').post( function(req,res){
+    console.log('/process/addreview 라우팅 함수 호출됨');
+    
+    var paramStore = req.body.reviewstore || req.query.reviewstore;
+    var paramTitle= req.body.reviewtitle || req.query.reviewtitle;
+    var paramContent = req.body.reviewcontent || req.query.reviewcontent;
+    var paramScore = req.body.reviewscore || req.query.reviewscore;
+    var paramFile = filename;
+    
+    
+    var database = req.app.get('database');
+
+    if(database){
+        addReview(database,paramStore,paramTitle,paramContent,paramScore,paramFile,
+       
+                function(err, docs) {
+			// 에러 발생 시, 클라이언트로 에러 전송
+			if (err) {
+                console.error('리뷰 등록 중 에러 발생 : ' + err.stack);
+                
+                res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+				res.write('<h2>리뷰 등록 중 에러 발생</h2>');
+                res.write('<p>' + err.stack + '</p>');
+				res.end();
+                
+                return;
+            }
+            // 조회된 레코드가 있으면 성공 응답 전송
+			if (docs) {
+				console.dir(docs);
+				
+				filename='';
+				// 뷰 템플레이트를 이용하여 렌더링한 후 전송
+				req.app.render('main',{user: req.user,enroll:' -> 리뷰가 등록되었습니다.',title:"홈 화면"}, function(err, html) {
+					if (err) {throw err;}
+					console.log('rendered : ' + html);
+					
+					res.end(html);
+                    });
+                    
+				
+			} else {  // 조회된 레코드가 없는 경우 실패 응답 전송
+				res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+				res.write('<h1>리뷰 등록</h1>');
+				res.end();
+			}
+		});
+	} else {  // 데이터베이스 객체가 초기화되지 않은 경우 실패 응답 전송
+		res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+		res.write('<h2>데이터베이스 연결 실패</h2>');
+		res.write('<div><p>데이터베이스에 연결하지 못했습니다.</p></div>');
+		res.end();
+	}
+});
+
+var addReview = function(db,store,title,content,score,file,callback){
+    
+    var user =new db.ReviewModel({"reviewstore":store,"reviewtitle":title,"reviewcontent":content,"reviewscore":score,"file":file});
+    
+    user.save(function(err){
+        if(err){
+            callback(err,null);
+            return;
+        }
+        console.log('리뷰 데이터 추가함.');
+        callback(null,user);
+    });
+    
+};
 
 
 //===== Passport Strategy 설정 =====//
-
 var LocalStrategy = require('passport-local').Strategy;
 
 //패스포트 로그인 설정
@@ -474,3 +618,5 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 	database.init(app, config);
    
 });
+
+

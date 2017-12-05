@@ -6,6 +6,7 @@ Schema.createSchema = function(mongoose){
         reviewtitle:{type:String,'default':''},
         reviewcontent:{type:String,'default':''},
         reviewscore:{type:String,'default':''},
+        file:{type:String,'default':''},
         count: {type:Number, default: 0}, //
         date: {type: Date, default: Date.now}, //
         deleted: {type: Boolean, default: false} // true면 삭제 된 경우임

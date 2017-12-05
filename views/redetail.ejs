@@ -7,7 +7,17 @@
     <br><br>
 <center><h1>맛집리뷰등록</h1></center>
 <br><br>
+
     
+<form id="uploadForm" enctype="multipart/form-data" action="/reviewUpload" method="post">
+    <pre>
+    <input type="file" class="form-control btn btn-warning"  id="recfile" name="recfile" placeholder="Select file">
+    <br>
+<input type="submit" value="Upload Image"  class="form-control btn btn-warning"  style='width:120px' name="submit" >  <label for="InputSubject1" style="color: #FF9900"><%= image %></label>
+</pre> 
+</form>    
+    
+<br><br>    
 <form action="/process/addreview" method="post" >
 <div class="form-group">
 <input type="text" class="form-control" id="reviewstore" name="reviewstore" placeholder="맛집명" style='width:300px'  > 
@@ -29,14 +39,7 @@
                             </div>
                         </form>
                         <br>
-                                    <label for="InputSubject1">파일첨부</label>
-
-                        <form id="uploadForm" enctype="multipart/form-data" action="/upload" method="post">
-                            <input type="file" name="userPhoto" multiple/>
-                            <br>
-
-                            <input type="submit" value="Upload Image"  class="form-control btn btn-warning"  style='width:120px' name="submit" >
-                        </form>
+                        
                     </div>
       </div>
       

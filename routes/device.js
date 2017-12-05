@@ -170,7 +170,7 @@ var sendall = function(req, res) {
 	 
     var paramStore = req.body.store || req.query.store;
     //var paramMonth = req.body.month || req.query.month;
-    var paramDay = req.body.day || req.query.day;
+    //var paramDay = req.body.day || req.query.day;
     var paramHour = req.body.hour || req.query.hour;
     var paramMinite = req.body.minite || req.query.minite;
 	
@@ -231,7 +231,6 @@ var sendall = function(req, res) {
 				message.addData('store', paramStore);
 				message.addData('hour', paramHour);
 				message.addData('minute', paramMinite);
-                res.redirect('/reserve');
                 
                 var sender = new fcm.Sender(config.fcm_api_key);
 

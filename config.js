@@ -11,21 +11,25 @@ module.exports = {
 	db_schemas: [
 	    {file:'./user_schema', collection:'users30', schemaName:'UserSchema', modelName:'UserModel'}
         ,{file:'./device_schema',collection:'devices21', schemaName:'DeviceSchema',modelName:'DeviceModel'}
-        ,{file:'./store_schema',collection:'store30', schemaName:'StoreSchema',modelName:'StoreModel'}
-        ,{file:'./review_schema',collection:'review10', schemaName:'ReviewSchema',modelName:'ReviewModel'}
+        ,{file:'./store_schema',collection:'store31', schemaName:'StoreSchema',modelName:'StoreModel'}
+        ,{file:'./review_schema',collection:'review13', schemaName:'ReviewSchema',modelName:'ReviewModel'}
         
  
         
 	],
 	route_info: [
         {file :'./user'  , path : '/process/listuser', method : 'listuser' , type : 'post'}
+/*
         ,{file:'./store' , path : '/process/addstore', method : 'addstore' , type : 'post'}
+*/
         ,{file:'./store' , path : '/process/liststore', method : 'liststore' , type : 'post'}
         ,{file:'./device', path : '/process/adddevice', method:'adddevice', type:'post'}
         ,{file:'./device', path : '/process/listdevice', method:'listdevice', type:'post'}
         ,{file:'./device', path : '/process/register', method:'register', type:'post'}
 	    ,{file:'./device', path : '/process/sendall', method:'sendall', type:'post'}
+/*
 	    ,{file:'./review', path : '/process/addreview', method:'addreview', type:'post'}
+*/
         ,{file:'./review', path : '/process/listreview', method : 'listreview' , type : 'post'}
 
 	],

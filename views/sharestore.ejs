@@ -2,12 +2,14 @@
 <br>
 <br>
 <br>
-    <div class="container">
-        <br><br>
-        <h1>맛집 게시판</h1>
-        <pre style='width:800px'>
-        <font size="4">
-        <div class="form-group">
+     <div id="total">
+        
+        <div id="nav">
+        <image src="<%=matzip.file%>"width="200" height="200">
+        </div>
+        <div id="section">
+        <pre>
+        <div >
         <pre class="label label-default">가게이름 :</pre> <%=matzip.storename%>
         
         <pre class="label label-default">운영시간 :</pre> <%=matzip.storetime%>
@@ -30,20 +32,20 @@
         
         <pre class="label label-default">주소 :</pre> <%=matzip.storeaddress%>
         
-        
         <pre class="label label-default">전화번호 : </pre> <%=matzip.storetel%>
         </div>
-        </font>
+        <div id="footer" align="right">
         <a href="/share" class="btn btn-warning"><span class="glyphicon glyphicon-log-in"></span>게시판으로</a>
-    
-    
-    </div>
-
+        </div>
+        </pre>          
+        </div>
+       
+         
     <div class="jumbotron text-center">
     <img src="../public/image/logo.jpg" width="50" height="50">
     <p align="center"> FoodTrip &copy;</p>
     </div>
-      
+      </div>
 
     </body>
 </html>

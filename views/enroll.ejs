@@ -6,8 +6,15 @@
 <div class="col-sm-6 col-sm-offset-3">
 <center><h1>맛집등록</h1><div style=color:#ff0000;><%= form %></div></center>
     <br><br>
-    
-    
+    <form id="uploadForm" enctype="multipart/form-data" action="/storeUpload" method="post">
+    <pre>
+    <input type="file" class="form-control btn btn-warning"  id="recfile" name="recfile" placeholder="Select file">
+    <br>
+<input type="submit" value="Upload Image"  class="form-control btn btn-warning"  style='width:120px' name="submit" >  <label for="InputSubject1" style="color: #FF9900"><%= image %></label>
+</pre> 
+</form>   
+    <br><br>
+
 <form action="/process/addstore" method="post" >
     
 <div class="form-group">
