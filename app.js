@@ -309,7 +309,30 @@ router.route('/share').get(function(req,res){
             res.render('share', {title: "맛집게시판", user:req.user, enroll:"", matzip: rawMatzip, pagination: pageNum});
         });
     });
-}); 
+});
+
+//맛집게시판 검색
+router.route('/search').get(function(req,res){
+    var search_word = req.param('searchWord');
+    var searchCondition = {$regex:search_word};
+
+    var page = req.param('page');
+    if(page == null) {page = 1;}
+    var skipSize = (page-1)*10;
+    var limitSize = 10;
+    var pageNum = 1;
+
+    
+    database.StoreModel.count({deleted:false, $or:[{title:searchCondition},{contents:searchCondition},{writer:searchCondition}]},function(err, totalCount){
+        if(err) throw err;
+        pageNum = Math.ceil(totalCount/limitSize);
+    
+    database.StoreModel.find({deleted:false, $or:[{title:searchCondition},{contents:searchCondition},{writer:searchCondition}]}).sort({date:-1}).skip(skipSize).limit(limitSize).exec(function(err, searchContents){
+    if(err) throw err;
+
+    res.render('share', {title: "맛집게시판",user:req.user, enroll:"", matzip: rawMatzip, contents: searchContents, pagination: pageNum, searchWord: search_word});
+    
+})
 
 // 맛집 클릭 시 -> sharestore.ejs
 router.route('/sharestore').get(function(req,res){

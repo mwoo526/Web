@@ -1,4 +1,109 @@
-<% include ./header.ejs %>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+		
+		<title><%= title %></title>
+		
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    	
+    	<style>
+        	body { padding-top:80px; }
+            th.id{
+                width:100px;
+                text-align: center;
+            }
+            th.title{
+                text-align: center;
+            }
+            th.writer {
+                width:150px;
+                text-align: center;
+            }
+            th.date {
+                width:250px;
+                text-align: center;
+            }
+            th.score {
+                width:100px;
+                text-align: center;
+            }
+             td.id{
+                width:100px;
+                text-align: center;
+            }
+            td.title{
+                text-align: center;
+            }
+            td.writer {
+                width:150px;
+                text-align: center;
+            }
+            td.date {
+                width:250px;
+                text-align: center;
+            }
+            td.score {
+                width:100px;
+                text-align: center;
+            }
+			@font-face {
+				font-family: 'Nanum Gothic'; font-style: normal; font-weight: 400;
+				src: url('../public/NanumGothic-Regular.eot');
+				src: local('NanumGothic'),
+					url('../public/NanumGothic-Regular.eot?#iefix') format('embedded-opentype'),
+					url('../public/NanumGothic-Regular.woff2') format('woff2'),
+					url('../public/NanumGothic-Regular.woff') format('woff'),
+					url('../public/NanumGothic-Regular.ttf') format('truetype');
+			}
+        	
+        	h1, p, a { font-family: 'Nanum Gothic' }
+    	</style>
+    <script>
+         function searchContent() {
+            if($('#searchWord').val == ''){
+                alert("검색어를 입력해주세요!!!");
+            } else {
+                $('#searchAction').submit();
+            }
+        }
+    </script>
+    
+	</head>
+	<body>
+		 <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">FoodTrip</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/share">맛집게시판</a></li>
+            <li><a href="/enroll">맛집등록</a></li>
+            <li><a href="/reserve">맛집예약</a></li>
+            <li><a href="/redetail">맛집리뷰</a></li>
+            <li><a href="/board">맛집공유</a></li>
+          </ul>
+            
+            <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+            <br>
+            <pre style="font-family:verdana;font-size:12pt;font-weight:bold;"><%= user.nickname %>   <a href="/logout" class="btn btn-warning"><span class="glyphicon glyphicon-log-in"></span>로그아웃</a></pre>
+            </form>
+        </div>
+      </div>
+    
+    <div style=font-family:verdana;font-size:11pt;font-weight:bold;color:#ffffff;><%= enroll %></div>
+
+    </nav>
 <br>
 <br>
 <br>
@@ -49,6 +154,13 @@
 <%}%>
 >        
 </div></center>
+    
+     <form class="navbar-form navbar-right"  action="/search" method="get" id="searchAction" name="searchAction">
+        <div class ="search">
+                <input type="text" class="search_word" id="searchWord" name="searchWord" placeholder="내용을 입력하세요.">
+                <a href="#" onclick="searchContent();"><button class="btn btn-default glyphicon glyphicon-search ">검색</button></a>
+         </div>
+    </form>
 
     
     <div class="jumbotron text-center">
