@@ -11,6 +11,7 @@
     	
     	<style>
         	body { padding-top:80px; }
+<<<<<<< HEAD
             div#total
             {
             margin: auto;    
@@ -34,6 +35,8 @@
             #footer{
             padding-right: 2cm;
             }
+=======
+>>>>>>> 37ecd2eb6c1e2151a4c9c10fce033b4f7f225bed
             th.id{
                 width:100px;
                 text-align: center;
@@ -93,6 +96,10 @@
             }
         }
     </script>
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 37ecd2eb6c1e2151a4c9c10fce033b4f7f225bed
 	</head>
 	<body>
 		 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -176,6 +183,13 @@
 <%}%>
 >        
 </div></center>
+    
+     <form class="navbar-form navbar-right"  action="/search" method="get" id="searchAction" name="searchAction">
+        <div class ="search">
+                <input type="text" class="search_word" id="searchWord" name="searchWord" placeholder="내용을 입력하세요.">
+                <a href="#" onclick="searchContent();"><button class="btn btn-default glyphicon glyphicon-search ">검색</button></a>
+         </div>
+    </form>
 
     <form class="navbar-form navbar-right"  action="/search" method="get" id="searchAction" name="searchAction">
         <div class ="search">
