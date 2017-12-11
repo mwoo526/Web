@@ -302,28 +302,6 @@ router.route('/share').get(function(req,res){
     });
 });
 
-//맛집게시판 검색
-router.route('/search').get(function(req,res){
-    var search_word = req.param('searchWord');
-    var searchCondition = {$regex:search_word};
-
-    var page = req.param('page');
-    if(page == null) {page = 1;}
-    var skipSize = (page-1)*10;
-    var limitSize = 10;
-    var pageNum = 1;
-
-    
-    database.StoreModel.count({deleted:false, $or:[{title:searchCondition},{contents:searchCondition},{writer:searchCondition}]},function(err, totalCount){
-        if(err) throw err;
-        pageNum = Math.ceil(totalCount/limitSize);
-    
-    database.StoreModel.find({deleted:false, $or:[{title:searchCondition},{contents:searchCondition},{writer:searchCondition}]}).sort({date:-1}).skip(skipSize).limit(limitSize).exec(function(err, searchContents){
-    if(err) throw err;
-
-    res.render('share', {title: "맛집게시판",user:req.user, enroll:"", matzip: rawMatzip, contents: searchContents, pagination: pageNum, searchWord: search_word});
-    
-})
 
 //맛집게시판 검색
 router.route('/search').get(function(req,res){
@@ -457,7 +435,7 @@ var addStore = function(database,storename,storetime, storemenu1,storeprice1,sto
 	    callback(null, user);
 	     
 	});
-}
+};
 
 
 
@@ -534,7 +512,18 @@ var addReview = function(db,store,title,content,score,file,callback){
     
 };
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+router.route('/date').post(function(req,res){
+    var date = req.body.date || req.query.date;
+    console.log("date 호출됨");
+    console.log(date);
+    /*var strArray=date.split('-');
+    var year=strArray[0];
+    var month=strArray[1];
+    var day=strArray[2];
+    console.log(year+' / '+month+' / '+day);*/
+});
 //===== Passport Strategy 설정 =====//
 var LocalStrategy = require('passport-local').Strategy;
 

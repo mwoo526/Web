@@ -169,10 +169,19 @@ var sendall = function(req, res) {
 	var database = req.app.get('database');
 	 
     var paramStore = req.body.store || req.query.store;
-    //var paramMonth = req.body.month || req.query.month;
-    //var paramDay = req.body.day || req.query.day;
-    var paramHour = req.body.hour || req.query.hour;
-    var paramMinite = req.body.minite || req.query.minite;
+    var clc = req.body.clc || req.query.clc;
+    console.log("date 호출됨");
+    console.log(clc);
+    var strArray=clc.split('-');
+    var paramYear=strArray[0];
+    var paramMonth=strArray[1];
+    var paramDay=strArray[2];
+    var time=req.body.time || req.body.time;
+    var strArray2=time.split(':');
+    var paramHour=strArray2[0];
+    var paramMinite=strArray2[1];
+    /*var paramHour = req.body.hour || req.query.hour;
+    var paramMinite = req.body.minite || req.query.minite;*/
 	
     
 	// 데이터베이스 객체가 초기화된 경우
@@ -220,8 +229,10 @@ var sendall = function(req, res) {
 				    priority: 'high',
 				    timeToLive: 3
 				});
+                
+                var date = new Date(paramYear, paramMonth-1, paramDay, paramHour, paramMinite, 0);;
                 //
-                var schedular = schedule.scheduleJob({/*date:paramDay,*/hour:paramHour,minute:paramMinite},function(){
+                var schedular = schedule.scheduleJob(date,function(){
                                                      
 				// node-gcm을 이용해 전송
 				
