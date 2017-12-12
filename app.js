@@ -120,7 +120,7 @@ app.post('/storeUpload', upload.any(),function (req, res) {
 
 // App 에서 파일을 업로드 시키기 위해 필요한 설정 .
 app.post('/reviewUpload', upload.any(),function (req, res) {
-    res.render('redetail.ejs',{title:"맛집리뷰",user: req.user,enroll:"",image:"사진이 등록되었습니다.^^"});
+    res.render('redetail.ejs',{title:"맛집리뷰",form:"", user: req.user,enroll:"",image:"사진이 등록되었습니다.^^"});
 });
 
 
@@ -228,7 +228,7 @@ router.route('/redetail').get(function(req, res) {
         res.render('index.ejs',{alert:"로그인을 해주세요!"});
         return;
     }
-	res.render('redetail.ejs',{title:"맛집리뷰",user: req.user,enroll:"",image:"사진을 등록하세요*.*"});
+	res.render('redetail.ejs',{title:"맛집리뷰",form:"", user: req.user,enroll:"",image:"사진을 등록하세요*.*"});
 });
 
 /* 맛집예약등록 */
@@ -315,7 +315,6 @@ router.route('/search').get(function(req,res){
     var skipSize = (page-1)*10;
     var limitSize = 10;
     var pageNum = 1;
-
     
     database.StoreModel.count({deleted:false, $or:[{storename:searchCondition},{storemenu1:searchCondition},{storetel:searchCondition}]},function(err, totalCount){
         if(err) throw err;
@@ -323,8 +322,6 @@ router.route('/search').get(function(req,res){
     
     database.StoreModel.find({deleted:false, $or:[{storename:searchCondition},{storemenu1:searchCondition},{storetel:searchCondition}]}).sort({date:-1}).skip(skipSize).limit(limitSize).exec(function(err, searchContents){
     if(err) throw err;
-        
-
 
     res.render('share', {title: "맛집게시판", user:req.user, enroll:"", matzip: searchContents, pagination: pageNum, searchWord: search_word});
             
@@ -376,7 +373,7 @@ router.route('/process/addstore').post(function(req, res) {
                 console.error('맛집 추가 중 에러 발생 : ' + err.stack);
                 
                 res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-                var context={title:"맛집등록",form:"등록을 위해 입력폼을 작성해주세요.",user: req.user,enroll:""}
+                var context={title:"맛집등록",form:"등록을 위해 입력폼을 작성해주세요.",image:"",user: req.user,enroll:""}
 				req.app.render('enroll',context, function(err, html) {
 					if (err) {throw err;}
 					
@@ -454,19 +451,21 @@ router.route('/process/addreview').post( function(req,res){
     
     var database = req.app.get('database');
 
-    if(database){
+    if(database.db){
         addReview(database,paramStore,paramTitle,paramContent,paramScore,paramFile,
        
                 function(err, docs) {
 			// 에러 발생 시, 클라이언트로 에러 전송
 			if (err) {
-                console.error('리뷰 등록 중 에러 발생 : ' + err.stack);
+                 console.error('리뷰 추가 중 에러 발생 : ' + err.stack);
                 
                 res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-				res.write('<h2>리뷰 등록 중 에러 발생</h2>');
-                res.write('<p>' + err.stack + '</p>');
-				res.end();
-                
+                var context={title:"리뷰등록",form:"등록을 위해 입력폼을 작성해주세요.",image:"",user: req.user,enroll:""}
+				req.app.render('redetail',context, function(err, html) {
+					if (err) {throw err;}					
+					res.end(html);
+				});
+				
                 return;
             }
             // 조회된 레코드가 있으면 성공 응답 전송
@@ -476,9 +475,7 @@ router.route('/process/addreview').post( function(req,res){
 				filename='';
 				// 뷰 템플레이트를 이용하여 렌더링한 후 전송
 				req.app.render('main',{user: req.user,enroll:' -> 리뷰가 등록되었습니다.',title:"홈 화면"}, function(err, html) {
-					if (err) {throw err;}
-					console.log('rendered : ' + html);
-					
+					if (err) {throw err;}					
 					res.end(html);
                     });
                     
@@ -514,16 +511,6 @@ var addReview = function(db,store,title,content,score,file,callback){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-router.route('/date').post(function(req,res){
-    var date = req.body.date || req.query.date;
-    console.log("date 호출됨");
-    console.log(date);
-    /*var strArray=date.split('-');
-    var year=strArray[0];
-    var month=strArray[1];
-    var day=strArray[2];
-    console.log(year+' / '+month+' / '+day);*/
-});
 //===== Passport Strategy 설정 =====//
 var LocalStrategy = require('passport-local').Strategy;
 

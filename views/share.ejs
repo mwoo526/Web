@@ -119,8 +119,6 @@
           </ul>
             
             <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-            <br>
             <pre style="font-family:verdana;font-size:12pt;font-weight:bold;"><%= user.nickname %>   <a href="/logout" class="btn btn-warning"><span class="glyphicon glyphicon-log-in"></span>로그아웃</a></pre>
             </form>
         </div>
@@ -181,13 +179,6 @@
 </div></center>
     
      <form class="navbar-form navbar-right"  action="/search" method="get" id="searchAction" name="searchAction">
-        <div class ="search">
-                <input type="text" class="search_word" id="searchWord" name="searchWord" placeholder="내용을 입력하세요.">
-                <a href="#" onclick="searchContent();"><button class="btn btn-default glyphicon glyphicon-search ">검색</button></a>
-         </div>
-    </form>
-
-    <form class="navbar-form navbar-right"  action="/search" method="get" id="searchAction" name="searchAction">
         <div class ="search">
                 <input type="text" class="search_word" id="searchWord" name="searchWord" placeholder="내용을 입력하세요.">
                 <a href="#" onclick="searchContent();"><button class="btn btn-default glyphicon glyphicon-search ">검색</button></a>

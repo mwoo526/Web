@@ -263,7 +263,6 @@ var sendall = function(req, res) {
 					res.write('<h2>푸시 메시지 전송 성공</h2>');
 					res.end();
               */
-                  
                     
                         //
                 });
