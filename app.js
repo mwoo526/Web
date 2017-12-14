@@ -443,6 +443,7 @@ router.route('/process/addreview').post( function(req,res){
     console.log('/process/addreview 라우팅 함수 호출됨');
     
     var paramStore = req.body.reviewstore || req.query.reviewstore;
+    var nickname = req.body.nickname;
     var paramTitle= req.body.reviewtitle || req.query.reviewtitle;
     var paramContent = req.body.reviewcontent || req.query.reviewcontent;
     var paramScore = req.body.reviewscore || req.query.reviewscore;
@@ -453,7 +454,7 @@ router.route('/process/addreview').post( function(req,res){
     var database = req.app.get('database');
 
     if(database.db){
-        addReview(database,paramStore,paramTitle,paramContent,paramScore,paramFile,
+        addReview(database,paramStore,nickname,paramTitle,paramContent,paramScore,paramFile,
        
                 function(err, docs) {
 			// 에러 발생 시, 클라이언트로 에러 전송
@@ -495,9 +496,9 @@ router.route('/process/addreview').post( function(req,res){
 	}
 });
 
-var addReview = function(db,store,title,content,score,file,callback){
+var addReview = function(db,store,nickname,title,content,score,file,callback){
     
-    var user =new db.ReviewModel({"reviewstore":store,"reviewtitle":title,"reviewcontent":content,"reviewscore":score,"file":file});
+    var user =new db.ReviewModel({"reviewstore":store,"writer2":nickname,"reviewtitle":title,"reviewcontent":content,"reviewscore":score,"file":file});
     
     user.save(function(err){
         if(err){

@@ -30,7 +30,7 @@
             <tr>
                 <td class="id"><%= i %></td>
                 <td class="title"><a href="/store?id=<%= item._id %>"><%= item.reviewtitle %></a></td>
-                <td class="writer"><%= user.nickname %></td>
+                <td class="writer"><%= item.writer2 %></td>
                 <td class="date"><%= dateFormatChange(item.date) %></td>
                 <td class="score"><%= item.count %></td>
             </tr>

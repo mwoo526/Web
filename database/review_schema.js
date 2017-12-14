@@ -3,6 +3,7 @@ var Schema = {};
 Schema.createSchema = function(mongoose){
     var ReviewSchema = mongoose.Schema({
         reviewstore:{type:String,'default':''},
+        writer2:String,
         reviewtitle:{type:String,'default':''},
         reviewcontent:{type:String,'default':''},
         reviewscore:{type:String,'default':''},

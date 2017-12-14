@@ -3,6 +3,7 @@ var Schema = {};
 Schema.createSchema = function(mongoose){
     var StoreSchema = mongoose.Schema({
         storename:{type:String,required:true,unique:true},
+        writer:String,
         storetime:{type:String,required:true},
         storemenu1:{type:String,'default':''},
         storeprice1:{type:String,'default':''},
