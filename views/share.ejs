@@ -154,7 +154,7 @@
             <tr>
                 <td class="id"><%= i %></td>
                 <td class="title"><a href="/sharestore?id=<%= item._id %>"><%= item.storename %></a></td>
-                <td class="writer"><%= user.nickname %></td>
+                <td class="writer"><%= item.writer %></td>
                 <td class="date"><%= dateFormatChange(item.date) %></td>
                 <td class="score"><%= item.count %></td>
             </tr>

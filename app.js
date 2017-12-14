@@ -316,11 +316,11 @@ router.route('/search').get(function(req,res){
     var limitSize = 10;
     var pageNum = 1;
     
-    database.StoreModel.count({deleted:false, $or:[{storename:searchCondition},{storemenu1:searchCondition},{storetel:searchCondition}]},function(err, totalCount){
+    database.StoreModel.count({deleted:false, $or:[{storename:searchCondition},{storetime:searchCondition},{storemenu1:searchCondition},{storeprice1:searchCondition},{storemenu2:searchCondition},{storeprice2:searchCondition},{storemenu3:searchCondition},{storeprice3:searchCondition},{storeaddress:searchCondition},{storetelarea:searchCondition},{storetel:searchCondition},{file:searchCondition}]},function(err, totalCount){
         if(err) throw err;
         pageNum = Math.ceil(totalCount/limitSize);
     
-    database.StoreModel.find({deleted:false, $or:[{storename:searchCondition},{storemenu1:searchCondition},{storetel:searchCondition}]}).sort({date:-1}).skip(skipSize).limit(limitSize).exec(function(err, searchContents){
+    database.StoreModel.find({deleted:false, $or:[{storename:searchCondition},{storetime:searchCondition},{storemenu1:searchCondition},{storeprice1:searchCondition},{storemenu2:searchCondition},{storeprice2:searchCondition},{storemenu3:searchCondition},{storeprice3:searchCondition},{storeaddress:searchCondition},{storetelarea:searchCondition},{storetel:searchCondition},{file:searchCondition}]}).sort({date:-1}).skip(skipSize).limit(limitSize).exec(function(err, searchContents){
     if(err) throw err;
 
     res.render('share', {title: "맛집게시판", user:req.user, enroll:"", matzip: searchContents, pagination: pageNum, searchWord: search_word});
@@ -345,9 +345,10 @@ router.route('/sharestore').get(function(req,res){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.route('/process/addstore').post(function(req, res) {
-	console.log('user(user.js) 모듈 안에 있는 adduser 호출됨.');
+	console.log('user(user.js) 모듈 안에 있는 adduser 호출됨. ////'+req.body.nickname);
     
     var parmName=req.body.storename || req.query.storename;
+    var nickname = req.body.nickname || req.query.nickname;
 	var paramTime = req.body.storetime || req.query.storetime;
     var paramMenu1 = req.body.storemenu1 || req.query.storemenu1;
     var paramPrice1 = req.body.storeprice1 || req.query.storeprice1;
@@ -360,14 +361,14 @@ router.route('/process/addstore').post(function(req, res) {
     var paramTell = req.body.storetel || req.query.storetel;
     var paramFile = filename;
 
-    console.log('요청 파라미터 : ' +parmName+','+ paramTime + ', ' + paramMenu1 + ', '+paramPrice1 +' , '+ paramAddress+ ' , '+paramTell+' , '+paramFile);
+    console.log('요청 파라미터 : ' +parmName+','+ paramTime + ', ' + paramMenu1 + ', '+paramPrice1 +' , '+ paramAddress+ ' , '+paramTell+' , '+paramFile+','+nickname);
     
     // 데이터베이스 객체 참조
 	var database = req.app.get('database');
 	
     // 데이터베이스 객체가 초기화된 경우, addUser 함수 호출하여 사용자 추가
 	if (database.db) {
-		addStore(database, parmName, paramTime, paramMenu1,paramPrice1,paramMenu2,paramPrice2,paramMenu3,paramPrice3,paramAddress,paramTellarea,paramTell,paramFile, function(err, addedStore) {
+		addStore(database, parmName, paramTime, paramMenu1,paramPrice1,paramMenu2,paramPrice2,paramMenu3,paramPrice3,paramAddress,paramTellarea,paramTell,paramFile,nickname, function(err, addedStore) {
             // 동일한 id로 추가하려는 경우 에러 발생 - 클라이언트로 에러 전송
 			if (err) {
                 console.error('맛집 추가 중 에러 발생 : ' + err.stack);
@@ -416,10 +417,10 @@ router.route('/process/addstore').post(function(req, res) {
 });
 
 //맛집를 등록
-var addStore = function(database,storename,storetime, storemenu1,storeprice1,storemenu2,storeprice2,storemenu3,storeprice3,storeaddress,storetelarea,storetel,file,callback) {
+var addStore = function(database,storename,nickname,storetime, storemenu1,storeprice1,storemenu2,storeprice2,storemenu3,storeprice3,storeaddress,storetelarea,storetel,file,callback) {
 	
 	// UserModel 인스턴스 생성
-	var user = new database.StoreModel({storename:storename ,storetime:storetime,storemenu1:storemenu1,storeprice1:storeprice1,storemenu2:storemenu2,storeprice2:storeprice2,storemenu3:storemenu3, storeprice3:storeprice3,storeaddress:storeaddress,storetelarea:storetelarea,storetel:storetel,file:file});
+	var user = new database.StoreModel({storename:storename ,writer:nickname,storetime:storetime,storemenu1:storemenu1,storeprice1:storeprice1,storemenu2:storemenu2,storeprice2:storeprice2,storemenu3:storemenu3, storeprice3:storeprice3,storeaddress:storeaddress,storetelarea:storetelarea,storetel:storetel,file:file});
 
 	// save()로 저장
 	user.save(function(err) {
